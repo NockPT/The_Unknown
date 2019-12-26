@@ -68,6 +68,7 @@ class GameView : SurfaceView, Runnable {
             for (b in playerBullets){
                 if (e.collissionDetection.intersect(b.collissionDetection)) {
                     e.y = viewHeight + 100
+                    score += 100
                 }
             }
 
@@ -102,10 +103,12 @@ class GameView : SurfaceView, Runnable {
             bulletTime = 3.0f
         }
 
-        for (b in playerBullets) {
-            if (y + 50.0f < 0 && y + 50.0f > -500.0f) {
-                playerBullets.remove(b)
+        if(dead) {
+
+            for (b in playerBullets) {
+                b.x = -1000
             }
+
         }
 
     }
@@ -126,6 +129,9 @@ class GameView : SurfaceView, Runnable {
             for ( eb in enemyBullets){
                 canvas.drawBitmap(eb.bitmap!!,eb.x.toFloat(),eb.y.toFloat(), Paint())
             }
+
+            paint.color = Color.BLACK
+            canvas.drawText("Score: " + score, 50.0f, 100.0f, paint)
 
             surfaceHolder.unlockCanvasAndPost(canvas)
         }
