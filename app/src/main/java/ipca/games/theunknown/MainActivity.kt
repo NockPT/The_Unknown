@@ -59,8 +59,8 @@ class MainActivity : AppCompatActivity() {
             exitProcess(0)
         }
 
-        imageStart.setOnClickListener {
-            val intent = Intent(this@MainActivity, GameActivity::class.java)
+        imageRestart.setOnClickListener {
+            val intent = Intent(this@MainActivity, GameActivity1::class.java)
             startActivity(intent)
 
         }

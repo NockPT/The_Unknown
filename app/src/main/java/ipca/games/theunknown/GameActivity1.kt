@@ -1,20 +1,16 @@
 package ipca.games.theunknown
 
-import android.animation.ValueAnimator
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
 import android.view.Display
 import android.view.View
-import android.view.animation.LinearInterpolator
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 
 
-class GameActivity : AppCompatActivity() {
+class GameActivity1 : AppCompatActivity() {
 
-    var gameView : GameView? = null
+    var gameView1 : GameView1? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,18 +49,18 @@ class GameActivity : AppCompatActivity() {
         var size : Point = Point()
         display.getSize(size)
 
-        gameView = GameView(this, size.x, size.y)
-        setContentView(gameView)
+        gameView1 = GameView1(this, size.x, size.y)
+        setContentView(gameView1)
 
     }
 
     override fun onPause() {
         super.onPause()
-        gameView!!.pause()
+        gameView1!!.pause()
     }
 
     override fun onResume() {
         super.onResume()
-        gameView!!.resume()
+        gameView1!!.resume()
     }
 }

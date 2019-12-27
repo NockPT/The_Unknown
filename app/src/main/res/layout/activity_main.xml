@@ -8,7 +8,7 @@
     tools:context=".MainActivity" >
 
     <ImageView
-        android:id="@+id/imageStart"
+        android:id="@+id/imageRestart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="210dp"
@@ -33,7 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageStart"
+        app:layout_constraintTop_toBottomOf="@+id/imageRestart"
         app:srcCompat="@drawable/exit" />
 
     <ImageView
@@ -44,7 +44,7 @@
         android:layout_marginTop="164dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="35dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageStart"
+        app:layout_constraintBottom_toTopOf="@+id/imageRestart"
         app:layout_constraintEnd_toStartOf="@+id/enemy_anim"
         app:layout_constraintStart_toEndOf="@+id/boss_1_anim"
         app:layout_constraintTop_toTopOf="parent"

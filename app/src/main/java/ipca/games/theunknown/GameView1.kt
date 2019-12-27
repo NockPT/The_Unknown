@@ -1,15 +1,17 @@
 package ipca.games.theunknown
 
-import android.animation.ValueAnimator
+import android.app.Activity
 import android.content.Context
-import android.graphics.*
+import android.content.Intent
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import android.view.animation.LinearInterpolator
-import android.widget.ImageView
 
-class GameView : SurfaceView, Runnable {
+
+class GameView1 : SurfaceView, Runnable {
 
     var playing : Boolean = false
     var gameThread : Thread? = null
@@ -57,6 +59,8 @@ class GameView : SurfaceView, Runnable {
             draw()
             control()
         }
+
+
     }
 
     fun update() {
@@ -104,11 +108,17 @@ class GameView : SurfaceView, Runnable {
         }
 
         if(dead) {
-
             for (b in playerBullets) {
                 b.x = -1000
             }
+            val intent = Intent().setClass(context, GameOverActivity::class.java)
+            (context as Activity).startActivity(intent)
+        }
 
+        if(score == 100){
+            val intent = Intent().setClass(context, GameActivity2::class.java)
+            intent.putExtra("SCORE", score)
+            (context as Activity).startActivity(intent)
         }
 
     }
