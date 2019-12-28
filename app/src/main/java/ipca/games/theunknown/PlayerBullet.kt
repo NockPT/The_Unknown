@@ -39,8 +39,8 @@ class PlayerBullet {
 
         bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.bullet)
 
-        x = player.x + (player.bitmap.width / 2) - bitmap.width
-        y = player.y
+        x = player.x + (player.bitmap.width / 2) - (bitmap.width / 2)
+        y = player.y - bitmap.height
 
         collissionDetection = Rect(x, y, bitmap.width, bitmap.height)
 

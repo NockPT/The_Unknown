@@ -39,7 +39,7 @@ class EnemyBullet {
 
         bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.enemy_bullet)
 
-        x = enemy.x + (enemy.bitmap.width / 2)
+        x = enemy.x + (enemy.bitmap.width / 2) - (bitmap.width / 2)
         y = enemy.y + enemy.bitmap.height
 
         collissionDetection = Rect(x, y, bitmap.width, bitmap.height)

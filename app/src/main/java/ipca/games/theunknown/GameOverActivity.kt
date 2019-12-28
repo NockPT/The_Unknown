@@ -3,11 +3,13 @@ package ipca.games.theunknown
 import android.content.Intent
 import android.graphics.drawable.AnimationDrawable
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_game_over.*
+import kotlinx.android.synthetic.main.activity_main.imageExit
+import kotlinx.android.synthetic.main.activity_main.imageRestart
 import kotlin.system.exitProcess
 
 class GameOverActivity : AppCompatActivity() {
@@ -54,13 +56,18 @@ class GameOverActivity : AppCompatActivity() {
         }
 
         imageExit.setOnClickListener {
-            exitProcess(0)
+            moveTaskToBack(true)
+            android.os.Process.killProcess(android.os.Process.myPid())
+            exitProcess(1)
         }
 
         imageRestart.setOnClickListener {
             val intent = Intent(this@GameOverActivity, GameActivity1::class.java)
             startActivity(intent)
         }
+
+        textViewScore.text = intent.getIntExtra("SCORE",0).toString()
+
     }
 
     override fun onStart() {

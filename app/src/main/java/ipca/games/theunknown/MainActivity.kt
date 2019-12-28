@@ -56,7 +56,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         imageExit.setOnClickListener {
-            exitProcess(0)
+            moveTaskToBack(true)
+            android.os.Process.killProcess(android.os.Process.myPid())
+            exitProcess(1)
         }
 
         imageRestart.setOnClickListener {

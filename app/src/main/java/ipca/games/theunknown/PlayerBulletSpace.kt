@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Rect
+import androidx.core.graphics.scale
 import java.util.*
 
 class PlayerBulletSpace {
@@ -39,8 +40,8 @@ class PlayerBulletSpace {
 
         bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.laser)
 
-        x = spacePlayer.x + (spacePlayer.bitmap.width / 2) - bitmap.width
-        y = spacePlayer.y
+        x = spacePlayer.x + (spacePlayer.bitmap.width / 2) - (bitmap.width / 2)
+        y = spacePlayer.y - bitmap.height
 
         collissionDetection = Rect(x, y, bitmap.width, bitmap.height)
 

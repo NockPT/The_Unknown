@@ -112,6 +112,7 @@ class GameView1 : SurfaceView, Runnable {
                 b.x = -1000
             }
             val intent = Intent().setClass(context, GameOverActivity::class.java)
+            intent.putExtra("SCORE", score)
             (context as Activity).startActivity(intent)
         }
 
