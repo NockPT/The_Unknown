@@ -30,15 +30,12 @@ class Boss2 {
         resized = Bitmap.createScaledBitmap(bitmap,(bitmap.getWidth() * 10.0f).toInt(), (bitmap.getHeight() * 10.0f).toInt(), true);
 
 
-        maxY = borderHeight - bitmap.height
-        maxX = borderWidth - bitmap.width
-
         y = 0
         x = (borderWidth / 2) - (resized.width / 2)
 
         speed = generator.nextInt(10) + 10
 
-        collissionDetection = Rect(x, y, bitmap.width, bitmap.height)
+        collissionDetection = Rect(x, y, resized.width, resized.height)
     }
 
     fun update(){
@@ -54,7 +51,7 @@ class Boss2 {
         }
         */
 
-        collissionDetection.set(x,y, x + bitmap.width, y + bitmap.height)
+        collissionDetection.set(x,y, x + resized.width, y + resized.height)
     }
 
 
