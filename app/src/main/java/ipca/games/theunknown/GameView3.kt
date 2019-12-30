@@ -9,6 +9,7 @@ import android.graphics.Paint
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import android.view.View
 
 
 class GameView3 : SurfaceView, Runnable {
@@ -103,7 +104,8 @@ class GameView3 : SurfaceView, Runnable {
         for (b in playerBulletsSpace) {
             b.update()
                 if (b.collissionDetection.intersect(boss2.collissionDetection)) {
-                    val intent = Intent().setClass(context, MainActivity::class.java)
+                    val intent = Intent().setClass(context, YouWinActivity::class.java)
+                    intent.putExtra("SCORE", score)
                     (context as Activity).startActivity(intent)
                 }
         }
@@ -128,7 +130,7 @@ class GameView3 : SurfaceView, Runnable {
 
 
         if(score == 3000){
-            val intent = Intent().setClass(context, MainActivity::class.java)
+            val intent = Intent().setClass(context, YouWinActivity::class.java)
             intent.putExtra("SCORE", score)
             (context as Activity).startActivity(intent)
         }
