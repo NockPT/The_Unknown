@@ -11,7 +11,7 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 
 
-class GameView2 : SurfaceView, Runnable {
+class GameView3 : SurfaceView, Runnable {
 
     var playing : Boolean = false
     var gameThread : Thread? = null
@@ -20,13 +20,12 @@ class GameView2 : SurfaceView, Runnable {
     var viewHeight = 0
 
     var spacePlayer : SpacePlayer
-    lateinit var boss1 : Boss1
+    var boss2 : Boss2
     var playerBulletsSpace : MutableList<PlayerBulletSpace> = ArrayList<PlayerBulletSpace>()
 
 
-    var enemies : MutableList<Enemy> = ArrayList<Enemy>()
-    var enemyBullets : MutableList<EnemyBullet> = ArrayList<EnemyBullet>()
-    var boss1bullets_1 : MutableList<Boss1Bullet_1> = ArrayList<Boss1Bullet_1>()
+    var bossEnemies : MutableList<EnemyBoss> = ArrayList<EnemyBoss>()
+    var enemyBulletsBoss : MutableList<EnemyBulletBoss> = ArrayList<EnemyBulletBoss>()
 
     var stars : MutableList<Star> = ArrayList<Star>()
 
@@ -39,9 +38,10 @@ class GameView2 : SurfaceView, Runnable {
     var bulletTimeBoss : Float
 
     var dead : Boolean = false
-    var bossTime : Boolean = false
+
     constructor(context: Context? , viewWidth : Int, viewHeight : Int) : super(context){
         spacePlayer = SpacePlayer(context!!, viewWidth, viewHeight)
+        boss2 = Boss2(context!!, viewWidth, viewHeight)
 
         paint = Paint()
         paint.textSize = 50.0f
@@ -55,8 +55,8 @@ class GameView2 : SurfaceView, Runnable {
         this.viewHeight = viewHeight
 
 
-        for(x in 0 until 3){
-            enemies.add(Enemy(context,viewWidth , viewHeight))
+        for(x in 0 until 6){
+            bossEnemies.add(EnemyBoss(context,viewWidth , viewHeight,boss2))
         }
 
         for(x in 0 until 100){
@@ -76,16 +76,16 @@ class GameView2 : SurfaceView, Runnable {
 
     fun update() {
         bulletTime -= 0.2f
-        bulletTimeBoss -= 0.2f
 
         for (s in stars) {
             s.Update()
         }
 
         spacePlayer.update()
+        boss2.update()
 
-        for (e in enemies) {
-            e.update()
+        for (e in bossEnemies) {
+            e.update(boss2)
             for (b in playerBulletsSpace){
                 if (e.collissionDetection.intersect(b.collissionDetection)) {
                     e.y = viewHeight + 100
@@ -102,22 +102,18 @@ class GameView2 : SurfaceView, Runnable {
 
         for (b in playerBulletsSpace) {
             b.update()
-            if(bossTime) {
-                if (b.collissionDetection.intersect(boss1.collissionDetection)) {
-                    val intent = Intent().setClass(context, GameActivity3::class.java)
-                    intent.putExtra("SCORE", score)
+                if (b.collissionDetection.intersect(boss2.collissionDetection)) {
+                    val intent = Intent().setClass(context, MainActivity::class.java)
                     (context as Activity).startActivity(intent)
                 }
-            }
         }
 
-        for (eb in enemyBullets) {
+        for (eb in enemyBulletsBoss) {
             eb.update()
             if (eb.collissionDetection.intersect(spacePlayer.collissionDetection)) {
                 spacePlayer.x = 1000
                 dead = true
             }
-
         }
 
         if(dead) {
@@ -130,23 +126,6 @@ class GameView2 : SurfaceView, Runnable {
 
         }
 
-        if(score >= 200 && !bossTime){
-            bossTime = true
-            if (bossTime){
-                boss1 = Boss1(context!!, viewWidth, viewHeight)
-                boss1bullets_1.add(Boss1Bullet_1(context!!, viewWidth, viewHeight, boss1))
-                bulletTimeBoss = 3.0f
-            }
-        }
-
-        if(bossTime){
-            boss1.update()
-
-            for (b1 in boss1bullets_1) {
-                b1.update()
-            }
-
-        }
 
         if(score == 3000){
             val intent = Intent().setClass(context, MainActivity::class.java)
@@ -156,15 +135,10 @@ class GameView2 : SurfaceView, Runnable {
 
         if(bulletTime <= 0.0f){
             playerBulletsSpace.add(PlayerBulletSpace(context!!, viewWidth, viewHeight, spacePlayer))
-            for (e in enemies) {
-                enemyBullets.add(EnemyBullet(context!!, viewWidth, viewHeight, e))
+            for (e in bossEnemies) {
+                enemyBulletsBoss.add(EnemyBulletBoss(context!!, viewWidth, viewHeight, e))
             }
             bulletTime = 3.0f
-        }
-
-        if(bulletTimeBoss <= 0.0f && bossTime){
-            boss1bullets_1.add(Boss1Bullet_1(context!!, viewWidth, viewHeight, boss1))
-            bulletTimeBoss = 3.0f
         }
 
     }
@@ -172,22 +146,18 @@ class GameView2 : SurfaceView, Runnable {
         if (surfaceHolder.surface.isValid) {
             canvas = surfaceHolder.lockCanvas()
             canvas.drawColor(Color.BLACK)
+
             canvas.drawBitmap(spacePlayer.bitmap!!, spacePlayer.x.toFloat(), spacePlayer.y.toFloat(), Paint())
 
-            if(bossTime) {
-                canvas.drawBitmap(boss1.bitmap!!, boss1.x.toFloat(), boss1.y.toFloat(), Paint())
+            canvas.drawBitmap(boss2.resized!!, boss2.x.toFloat(), boss2.y.toFloat(), Paint())
 
-                for (b1 in boss1bullets_1) {
-                    canvas.drawBitmap(b1.bitmap!!, b1.x.toFloat(), b1.y.toFloat(), Paint())
-                }
-            }
 
             for ( s in stars){
                 paint.strokeWidth = s.getStarWidth()
                 canvas.drawPoint(s.x.toFloat(), s.y.toFloat(), paint)
             }
 
-            for ( e in enemies){
+            for ( e in bossEnemies){
                 canvas.drawBitmap(e.bitmap!!, e.x.toFloat(),e.y.toFloat(), Paint())
             }
 
@@ -195,7 +165,7 @@ class GameView2 : SurfaceView, Runnable {
                 canvas.drawBitmap(b.bitmap!!, b.x.toFloat(), b.y.toFloat(), Paint())
             }
 
-            for ( eb in enemyBullets){
+            for ( eb in enemyBulletsBoss){
                 canvas.drawBitmap(eb.bitmap!!,eb.x.toFloat(),eb.y.toFloat(), Paint())
             }
 

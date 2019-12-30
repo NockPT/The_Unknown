@@ -116,7 +116,7 @@ class GameView1 : SurfaceView, Runnable {
             (context as Activity).startActivity(intent)
         }
 
-        if(score == 100){
+        if(score >= 100){
             val intent = Intent().setClass(context, GameActivity2::class.java)
             intent.putExtra("SCORE", score)
             (context as Activity).startActivity(intent)
@@ -126,7 +126,8 @@ class GameView1 : SurfaceView, Runnable {
     fun draw() {
         if (surfaceHolder.surface.isValid) {
             canvas = surfaceHolder.lockCanvas()
-            canvas.drawColor(Color.WHITE)
+            canvas.drawColor(getResources().getColor(R.color.water))
+
             canvas.drawBitmap(player.bitmap!!, player.x.toFloat(), player.y.toFloat(), Paint())
 
             for ( e in enemies){

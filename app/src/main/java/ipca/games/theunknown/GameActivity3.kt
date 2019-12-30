@@ -7,14 +7,13 @@ import android.os.Bundle
 import android.view.Display
 import android.view.View
 
-class GameActivity2 : AppCompatActivity() {
+class GameActivity3 : AppCompatActivity() {
 
-    var gameView2 : GameView2? = null
+    var gameView3 : GameView3? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_game2)
-
+        setContentView(R.layout.activity_game3)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
                     // Set the content to appear under the system bars so that the
@@ -31,20 +30,21 @@ class GameActivity2 : AppCompatActivity() {
         var size : Point = Point()
         display.getSize(size)
 
-        gameView2 = GameView2(this, size.x, size.y)
-        gameView2!!.score = getIntent().getIntExtra("SCORE",0)
-        setContentView(gameView2)
+        gameView3 = GameView3(this, size.x, size.y)
+        gameView3!!.score = getIntent().getIntExtra("SCORE",0)
+        setContentView(gameView3)
 
     }
 
     override fun onPause() {
         super.onPause()
-        gameView2!!.pause()
+        gameView3!!.pause()
     }
 
     override fun onResume() {
         super.onResume()
-        gameView2!!.resume()
+        gameView3!!.resume()
     }
 
 }
+
