@@ -32,15 +32,15 @@ class Star{
         y += speed
 
         if(y > maxY){
-         y = 0
-         var generator = Random()
-         speed = generator.nextInt(10)
-         x = generator.nextInt(maxX)
+            y = 0
+            var generator = Random()
+            speed = generator.nextInt(10)
+            x = generator.nextInt(maxX)
         }
     }
 
     fun getStarWidth () : Float {
-    var generator = Random()
-    return generator.nextFloat() * 3.0f
+        var generator = Random()
+        return generator.nextFloat() * 3.0f
     }
 }
