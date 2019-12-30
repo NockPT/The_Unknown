@@ -28,23 +28,6 @@ class GameActivity1 : AppCompatActivity() {
                     or View.SYSTEM_UI_FLAG_FULLSCREEN)
         }
 
-        /*val backgroundOne: ImageView = findViewById(R.id.background_one)
-        val backgroundTwo: ImageView = findViewById(R.id.background_two)
-
-        val animator = ValueAnimator.ofFloat(0.0f, 1.0f)
-        animator.repeatCount = ValueAnimator.INFINITE
-        animator.interpolator = LinearInterpolator()
-        animator.duration = 10000L
-        animator.addUpdateListener { animation ->
-            val progress = animation.animatedValue as Float
-            val height: Float = backgroundOne.height.toFloat()
-            val translationY = height * progress
-            backgroundOne.translationY = translationY
-            backgroundTwo.translationY = translationY - height
-        }
-        animator.start()*/
-
-
         val display : Display = windowManager.defaultDisplay
         var size : Point = Point()
         display.getSize(size)

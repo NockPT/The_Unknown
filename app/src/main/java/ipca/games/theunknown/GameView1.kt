@@ -26,6 +26,8 @@ class GameView1 : SurfaceView, Runnable {
     var enemies : MutableList<Enemy> = ArrayList<Enemy>()
     var enemyBullets : MutableList<EnemyBullet> = ArrayList<EnemyBullet>()
 
+    var waves : MutableList<Water> = ArrayList<Water>()
+
     var paint : Paint
     var canvas :Canvas
     var surfaceHolder : SurfaceHolder
@@ -51,6 +53,11 @@ class GameView1 : SurfaceView, Runnable {
             enemies.add(Enemy(context,viewWidth , viewHeight))
         }
 
+        for(x in 0 until 100){
+            waves.add(Water(context,viewWidth , viewHeight))
+
+        }
+
     }
 
     override fun run() {
@@ -66,7 +73,12 @@ class GameView1 : SurfaceView, Runnable {
     fun update() {
         bulletTime -= 0.2f
         player.update()
-        //playerBullet.update(player)
+
+        for (w in waves) {
+            w.Update()
+        }
+
+
         for (e in enemies) {
             e.update()
             for (b in playerBullets){
@@ -130,6 +142,10 @@ class GameView1 : SurfaceView, Runnable {
 
             canvas.drawBitmap(player.bitmap!!, player.x.toFloat(), player.y.toFloat(), Paint())
 
+            for (w in waves){
+                canvas.drawBitmap(w.bitmap!!, w.x.toFloat(),w.y.toFloat(), Paint())
+            }
+            
             for ( e in enemies){
                 canvas.drawBitmap(e.bitmap!!, e.x.toFloat(),e.y.toFloat(), Paint())
             }

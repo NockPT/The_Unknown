@@ -32,7 +32,9 @@ class EnemyBoss {
         maxX = borderWidth - bitmap.width
 
         speed = generator.nextInt(10) + 10
-        x = generator.nextInt(maxX)
+
+        x = boss2.x + generator.nextInt(boss2.resized.width)
+        //x = generator.nextInt(maxX)
         y = boss2.resized.height
 
         collissionDetection = Rect(x, y, bitmap.width, bitmap.height)
@@ -44,7 +46,8 @@ class EnemyBoss {
 
         if (y - bitmap.height * 2 > maxY) {
 
-            x = generator.nextInt(maxX)
+            x = boss2.x + generator.nextInt(boss2.resized.width)
+            //x = generator.nextInt(maxX)
             speed = generator.nextInt(10) + 10
             y = boss2.resized.height
         }
