@@ -126,7 +126,7 @@ class GameView1 : SurfaceView, Runnable {
     fun draw() {
         if (surfaceHolder.surface.isValid) {
             canvas = surfaceHolder.lockCanvas()
-            canvas.drawColor(Color.WHITE)
+            canvas.drawColor(Color.CYAN)
             canvas.drawBitmap(player.bitmap!!, player.x.toFloat(), player.y.toFloat(), Paint())
 
             for ( e in enemies){
