@@ -1,6 +1,7 @@
 package ipca.games.theunknown
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.drawable.AnimationDrawable
 import android.os.Build
 import android.os.Bundle
@@ -21,6 +22,7 @@ class GameOverActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation =  (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_game_over)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

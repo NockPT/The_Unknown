@@ -1,5 +1,6 @@
 package ipca.games.theunknown
 
+import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +15,7 @@ class GameActivity1 : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation =  (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_game)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

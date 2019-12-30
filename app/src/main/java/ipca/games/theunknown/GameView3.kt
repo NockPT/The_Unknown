@@ -10,6 +10,8 @@ import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 
 
 class GameView3 : SurfaceView, Runnable {
@@ -62,9 +64,12 @@ class GameView3 : SurfaceView, Runnable {
 
         for(x in 0 until 100){
             stars.add(Star(viewWidth , viewHeight))
-
         }
+        val tf = ResourcesCompat.getFont(context, R.font.agencyfb);
+        paint.setTypeface(tf)
 
+        val colorOrange = ContextCompat.getColor(context, R.color.orange)
+        paint.color = colorOrange
     }
 
     override fun run() {
@@ -171,7 +176,6 @@ class GameView3 : SurfaceView, Runnable {
                 canvas.drawBitmap(eb.bitmap!!,eb.x.toFloat(),eb.y.toFloat(), Paint())
             }
 
-            paint.color = Color.WHITE
             canvas.drawText("Score: " + score, 50.0f, 100.0f, paint)
 
             surfaceHolder.unlockCanvasAndPost(canvas)

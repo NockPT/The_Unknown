@@ -6,9 +6,12 @@ import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 
 
 class GameView1 : SurfaceView, Runnable {
@@ -25,8 +28,6 @@ class GameView1 : SurfaceView, Runnable {
 
     var enemies : MutableList<Enemy> = ArrayList<Enemy>()
     var enemyBullets : MutableList<EnemyBullet> = ArrayList<EnemyBullet>()
-
-    var waves : MutableList<Water> = ArrayList<Water>()
 
     var paint : Paint
     var canvas :Canvas
@@ -48,15 +49,14 @@ class GameView1 : SurfaceView, Runnable {
         this.viewWidth = viewWidth
         this.viewHeight = viewHeight
 
-
         for(x in 0 until 3){
             enemies.add(Enemy(context,viewWidth , viewHeight))
         }
+        val tf = ResourcesCompat.getFont(context, R.font.agencyfb);
+        paint.setTypeface(tf)
 
-        for(x in 0 until 100){
-            waves.add(Water(context,viewWidth , viewHeight))
-
-        }
+        val colorOrange = ContextCompat.getColor(context, R.color.orange)
+        paint.color = colorOrange
 
     }
 
@@ -66,18 +66,11 @@ class GameView1 : SurfaceView, Runnable {
             draw()
             control()
         }
-
-
     }
 
     fun update() {
         bulletTime -= 0.2f
         player.update()
-
-        for (w in waves) {
-            w.Update()
-        }
-
 
         for (e in enemies) {
             e.update()
@@ -105,7 +98,6 @@ class GameView1 : SurfaceView, Runnable {
                 player.x = 1000
                 dead = true
             }
-
         }
 
 
@@ -133,8 +125,8 @@ class GameView1 : SurfaceView, Runnable {
             intent.putExtra("SCORE", score)
             (context as Activity).startActivity(intent)
         }
-
     }
+
     fun draw() {
         if (surfaceHolder.surface.isValid) {
             canvas = surfaceHolder.lockCanvas()
@@ -142,10 +134,6 @@ class GameView1 : SurfaceView, Runnable {
 
             canvas.drawBitmap(player.bitmap!!, player.x.toFloat(), player.y.toFloat(), Paint())
 
-            for (w in waves){
-                canvas.drawBitmap(w.bitmap!!, w.x.toFloat(),w.y.toFloat(), Paint())
-            }
-            
             for ( e in enemies){
                 canvas.drawBitmap(e.bitmap!!, e.x.toFloat(),e.y.toFloat(), Paint())
             }
@@ -158,7 +146,6 @@ class GameView1 : SurfaceView, Runnable {
                 canvas.drawBitmap(eb.bitmap!!,eb.x.toFloat(),eb.y.toFloat(), Paint())
             }
 
-            paint.color = Color.BLACK
             canvas.drawText("Score: " + score, 50.0f, 100.0f, paint)
 
             surfaceHolder.unlockCanvasAndPost(canvas)
@@ -180,11 +167,7 @@ class GameView1 : SurfaceView, Runnable {
 
     }
 
-
-
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-
-
         event?.let { ev ->
             when(ev.action.and(MotionEvent.ACTION_MASK)){
                 MotionEvent.ACTION_DOWN->{
@@ -205,12 +188,11 @@ class GameView1 : SurfaceView, Runnable {
             event?.let { ev ->
                 when(ev.action.and(MotionEvent.ACTION_MASK)){
                     MotionEvent.ACTION_MOVE->{
-                            player.x = event.x.toInt() - (player.bitmap.width / 2)
-                        }
+                        player.x = event.x.toInt() - (player.bitmap.width / 2)
                     }
                 }
+            }
         }
-
         return true
     }
 }

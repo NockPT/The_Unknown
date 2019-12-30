@@ -9,6 +9,8 @@ import android.graphics.Paint
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 
 
 class GameView2 : SurfaceView, Runnable {
@@ -50,10 +52,8 @@ class GameView2 : SurfaceView, Runnable {
         bulletTime = 3.0f
         bulletTimeBoss = 0.0f
 
-
         this.viewWidth = viewWidth
         this.viewHeight = viewHeight
-
 
         for(x in 0 until 3){
             enemies.add(Enemy(context,viewWidth , viewHeight))
@@ -61,9 +61,13 @@ class GameView2 : SurfaceView, Runnable {
 
         for(x in 0 until 100){
             stars.add(Star(viewWidth , viewHeight))
-
         }
 
+        val tf = ResourcesCompat.getFont(context, R.font.agencyfb);
+        paint.setTypeface(tf)
+
+        val colorOrange = ContextCompat.getColor(context, R.color.orange)
+        paint.color = colorOrange
     }
 
     override fun run() {
@@ -117,7 +121,6 @@ class GameView2 : SurfaceView, Runnable {
                 spacePlayer.x = 1000
                 dead = true
             }
-
         }
 
         if(dead) {
@@ -127,7 +130,6 @@ class GameView2 : SurfaceView, Runnable {
             val intent = Intent().setClass(context, GameOverActivity::class.java)
             intent.putExtra("SCORE", score)
             (context as Activity).startActivity(intent)
-
         }
 
         if(score >= 200 && !bossTime){
@@ -145,7 +147,6 @@ class GameView2 : SurfaceView, Runnable {
             for (b1 in boss1bullets_1) {
                 b1.update()
             }
-
         }
 
         if(score == 3000){
@@ -199,7 +200,6 @@ class GameView2 : SurfaceView, Runnable {
                 canvas.drawBitmap(eb.bitmap!!,eb.x.toFloat(),eb.y.toFloat(), Paint())
             }
 
-            paint.color = Color.WHITE
             canvas.drawText("Score: " + score, 50.0f, 100.0f, paint)
 
             surfaceHolder.unlockCanvasAndPost(canvas)
@@ -220,8 +220,6 @@ class GameView2 : SurfaceView, Runnable {
         gameThread!!.start()
 
     }
-
-
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
@@ -246,12 +244,11 @@ class GameView2 : SurfaceView, Runnable {
             event?.let { ev ->
                 when(ev.action.and(MotionEvent.ACTION_MASK)){
                     MotionEvent.ACTION_MOVE->{
-                            spacePlayer.x = event.x.toInt() - (spacePlayer.bitmap.width / 2)
-                        }
+                        spacePlayer.x = event.x.toInt() - (spacePlayer.bitmap.width / 2)
                     }
                 }
+            }
         }
-
         return true
     }
 }
