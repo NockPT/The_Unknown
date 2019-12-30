@@ -39,8 +39,8 @@
 
     <ImageView
         android:id="@+id/imageBoss2"
-        android:layout_width="152dp"
-        android:layout_height="94dp"
+        android:layout_width="117dp"
+        android:layout_height="42dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="164dp"
         android:layout_marginEnd="20dp"
@@ -99,7 +99,7 @@
         android:layout_height="66dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="164dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginEnd="45dp"
         android:layout_marginBottom="100dp"
         android:rotation="0"
         app:layout_constraintBottom_toTopOf="@+id/spaceship_anim"
@@ -109,8 +109,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="333dp"
+        android:layout_height="80dp"
         android:layout_marginStart="72dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="72dp"
@@ -133,6 +133,7 @@
         app:layout_constraintEnd_toStartOf="@+id/textViewScore"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ship_anim"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/score" />
 
     <TextView
