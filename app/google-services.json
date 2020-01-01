@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "800062896788-p5annp6301hrn1ea11b90m2v59m2ofv1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ipca.games.theunknown",
+            "certificate_hash": "2502d55de4d14f16a8ed2499a6aeb9d0d5dc7264"
+          }
+        },
+        {
           "client_id": "800062896788-r0amk81m6a5ukpjmrgijlk9jlmkcnir7.apps.googleusercontent.com",
           "client_type": 3
         }

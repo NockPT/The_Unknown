@@ -38,11 +38,16 @@ class LoginActivity : AppCompatActivity() {
         usernameEditText = findViewById<EditText>(R.id.username)
         passwordEditText = findViewById<EditText>(R.id.password)
         val loginButton = findViewById<Button>(R.id.login)
-        val loading = findViewById<ProgressBar>(R.id.loading)
+        val registerButton = findViewById<Button>(R.id.register)
 
         loginButton.setOnClickListener {
             login(usernameEditText.text.toString(),
                 passwordEditText.text.toString())
+        }
+
+        registerButton.setOnClickListener {
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+            startActivity(intent)
         }
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(this@LoginActivity)
