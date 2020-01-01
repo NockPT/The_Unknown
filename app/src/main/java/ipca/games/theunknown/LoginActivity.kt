@@ -29,13 +29,16 @@ class LoginActivity : AppCompatActivity() {
         //username = test@test.com
         //password = 123123
 
+        //for debugging purposes
+        username.setText("test@test.com")
+        password.setText("123123")
+
         auth = FirebaseAuth.getInstance()
 
         usernameEditText = findViewById<EditText>(R.id.username)
         passwordEditText = findViewById<EditText>(R.id.password)
         val loginButton = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
-
 
         loginButton.setOnClickListener {
             login(usernameEditText.text.toString(),

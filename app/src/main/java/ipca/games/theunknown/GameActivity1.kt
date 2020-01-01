@@ -7,11 +7,43 @@ import android.os.Bundle
 import android.view.Display
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
-class GameActivity1 : AppCompatActivity() {
+class GameActivity1 : AppCompatActivity {
 
     var gameView1 : GameView1? = null
+
+    companion object{
+        var highscore : Int? = 0
+    }
+
+    constructor() : super()
+    {
+        val database = FirebaseDatabase.getInstance()
+        val myRef = database.getReference("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("highscore")
+
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                val value = dataSnapshot.getValue(Long::class.java)
+                highscore = value?.toInt()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                highscore = 0
+            }
+        })
+
+        if(highscore == null)
+            highscore = 0
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +65,9 @@ class GameActivity1 : AppCompatActivity() {
         val display : Display = windowManager.defaultDisplay
         var size : Point = Point()
         display.getSize(size)
+
+        if(highscore == null)
+            highscore = 0
 
         gameView1 = GameView1(this, size.x, size.y)
         setContentView(gameView1)

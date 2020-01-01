@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_game_over.*
 import kotlinx.android.synthetic.main.activity_main.imageExit
 import kotlinx.android.synthetic.main.activity_main.imageRestart
@@ -69,6 +71,14 @@ class YouWinActivity : AppCompatActivity() {
         }
 
         textViewScore.text = intent.getIntExtra("SCORE",0).toString()
+        var finalscore = intent.getIntExtra("SCORE",0)
+
+        val database = FirebaseDatabase.getInstance()
+        val myRef = database.getReference("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("highscore")
+
+        if(finalscore > GameActivity1.highscore!!)
+            myRef.setValue(finalscore)
+
 
     }
 
