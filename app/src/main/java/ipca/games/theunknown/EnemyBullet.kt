@@ -3,6 +3,7 @@ package ipca.games.theunknown
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.Rect
 import java.util.*
 
@@ -22,7 +23,6 @@ class EnemyBullet {
 
     var generator = Random()
 
-    var color: Int
 
     constructor(context: Context,
                 borderWidth: Int,
@@ -33,9 +33,8 @@ class EnemyBullet {
         maxY = borderHeight
         minX = 0
         minY = 100
-        speed = enemy.speed * 2
+        speed = 15
 
-        color = colorsArray()[(generator.nextInt(3))]
 
         bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.enemy_bullet)
 
@@ -46,16 +45,21 @@ class EnemyBullet {
 
     }
 
-    fun update() {
+    fun update(enemy: Enemy) {
 
-        y += speed
+        if(enemy.color == Color.WHITE){
+            y += speed
+        }
+
+        if(enemy.color == Color.RED){
+            y += speed * 2
+        }
+
+        if(enemy.color == Color.GREEN){
+            y += speed / 2
+        }
+
+
         collissionDetection.set(x,y, x + bitmap.width, y + bitmap.height)
-
-
-        /*if (y + 50.0f < 0 && y + 50.0f > -500.0f) {
-            speed = 10
-            x = player.x + (player.bitmap.width / 2) - bitmap.width
-            y = player.y
-        }*/
     }
 }

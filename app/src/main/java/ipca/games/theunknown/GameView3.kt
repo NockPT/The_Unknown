@@ -3,9 +3,7 @@ package ipca.games.theunknown
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -42,6 +40,8 @@ class GameView3 : SurfaceView, Runnable {
 
     var dead : Boolean = false
 
+    val colorOrange : Int
+
     constructor(context: Context? , viewWidth : Int, viewHeight : Int) : super(context){
         spacePlayer = SpacePlayer(context!!, viewWidth, viewHeight)
         boss2 = Boss2(context!!, viewWidth, viewHeight)
@@ -65,10 +65,10 @@ class GameView3 : SurfaceView, Runnable {
         for(x in 0 until 100){
             stars.add(Star(viewWidth , viewHeight))
         }
-        val tf = ResourcesCompat.getFont(context, R.font.agencyfb);
+        val tf = ResourcesCompat.getFont(context, R.font.agencyfb)
         paint.setTypeface(tf)
 
-        val colorOrange = ContextCompat.getColor(context, R.color.orange)
+        colorOrange = ContextCompat.getColor(context, R.color.orange)
         paint.color = colorOrange
     }
 
@@ -94,8 +94,16 @@ class GameView3 : SurfaceView, Runnable {
             e.update(boss2)
             for (b in playerBulletsSpace){
                 if (e.collissionDetection.intersect(b.collissionDetection)) {
-                    e.y = viewHeight + 100
-                    score += 100
+                    b.y = 0 - 100
+                    if(e.color == Color.RED){
+                        score += 100
+                        e.y = viewHeight + 100
+                    }
+                    if(e.color == Color.GREEN){
+                        score += 25
+                        e.y = viewHeight + 100
+                    }
+                    e.color = b.color
                 }
             }
 
@@ -161,21 +169,26 @@ class GameView3 : SurfaceView, Runnable {
 
             for ( s in stars){
                 paint.strokeWidth = s.getStarWidth()
+                paint.color = Color.WHITE
                 canvas.drawPoint(s.x.toFloat(), s.y.toFloat(), paint)
             }
 
             for ( e in bossEnemies){
-                canvas.drawBitmap(e.bitmap!!, e.x.toFloat(),e.y.toFloat(), Paint())
+                paint.colorFilter = PorterDuffColorFilter(e.color, PorterDuff.Mode.MULTIPLY)
+                canvas.drawBitmap(e.bitmap!!, e.x.toFloat(),e.y.toFloat(), paint)
             }
 
             for (b in playerBulletsSpace) {
-                canvas.drawBitmap(b.bitmap!!, b.x.toFloat(), b.y.toFloat(), Paint())
+                paint.colorFilter = PorterDuffColorFilter(b.color, PorterDuff.Mode.MULTIPLY)
+                canvas.drawBitmap(b.bitmap!!, b.x.toFloat(), b.y.toFloat(), paint)
             }
 
             for ( eb in enemyBulletsBoss){
                 canvas.drawBitmap(eb.bitmap!!,eb.x.toFloat(),eb.y.toFloat(), Paint())
             }
 
+            paint.colorFilter = null
+            paint.color = colorOrange
             canvas.drawText("Score: " + score, 50.0f, 100.0f, paint)
 
             surfaceHolder.unlockCanvasAndPost(canvas)

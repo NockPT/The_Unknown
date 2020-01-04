@@ -3,6 +3,7 @@ package ipca.games.theunknown
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.Rect
 import java.security.AccessControlContext
 import java.util.*
@@ -23,6 +24,7 @@ class EnemyBoss {
     private var minX = 0
     private var minY = 0
     val collissionDetection : Rect
+    var color: Int
 
     constructor(context: Context, borderWidth : Int, borderHeight : Int, boss2: Boss2){
 
@@ -37,12 +39,25 @@ class EnemyBoss {
         //x = generator.nextInt(maxX)
         y = boss2.resized.height
 
+        color = Color.WHITE
+
         collissionDetection = Rect(x, y, bitmap.width, bitmap.height)
     }
 
     fun update(boss2: Boss2){
 
-        y += speed
+        if(color == Color.WHITE){
+            y += speed
+        }
+
+        if(color == Color.RED){
+            y += speed * 2
+        }
+
+        if(color == Color.GREEN){
+            y += speed / 2
+        }
+
 
         if (y - bitmap.height * 2 > maxY) {
 

@@ -3,6 +3,7 @@ package ipca.games.theunknown
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.Rect
 import java.security.AccessControlContext
 import java.util.*
@@ -23,6 +24,7 @@ class Enemy {
     private var minX = 0
     private var minY = 0
     val collissionDetection : Rect
+    var color: Int
 
     constructor(context: Context, borderWidth : Int, borderHeight : Int){
 
@@ -35,17 +37,31 @@ class Enemy {
         x = generator.nextInt(maxX)
         y = 0
 
+        color = Color.WHITE
+
         collissionDetection = Rect(x, y, bitmap.width, bitmap.height)
     }
 
     fun update(){
 
-        y += speed
+        if(color == Color.WHITE){
+            y += speed
+        }
+
+        if(color == Color.RED){
+            y += speed * 2
+        }
+
+        if(color == Color.GREEN){
+            y += speed / 2
+        }
+
 
         if (y - bitmap.height * 2 > maxY) {
             x = generator.nextInt(maxX)
             speed = generator.nextInt(10) + 10
             y = 0
+            color = Color.WHITE
         }
 
         collissionDetection.set(x,y, x + bitmap.width, y + bitmap.height)

@@ -3,9 +3,7 @@ package ipca.games.theunknown
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -20,6 +18,7 @@ class GameView2 : SurfaceView, Runnable {
     var score: Int = 0
     var viewWidth = 0
     var viewHeight = 0
+    var bossScore : Int
 
     var spacePlayer : SpacePlayer
     lateinit var boss1 : Boss1
@@ -42,6 +41,9 @@ class GameView2 : SurfaceView, Runnable {
 
     var dead : Boolean = false
     var bossTime : Boolean = false
+
+    val colorOrange : Int
+
     constructor(context: Context? , viewWidth : Int, viewHeight : Int) : super(context){
         spacePlayer = SpacePlayer(context!!, viewWidth, viewHeight)
 
@@ -51,6 +53,7 @@ class GameView2 : SurfaceView, Runnable {
         surfaceHolder = holder
         bulletTime = 3.0f
         bulletTimeBoss = 0.0f
+        bossScore = 550
 
         this.viewWidth = viewWidth
         this.viewHeight = viewHeight
@@ -63,10 +66,10 @@ class GameView2 : SurfaceView, Runnable {
             stars.add(Star(viewWidth , viewHeight))
         }
 
-        val tf = ResourcesCompat.getFont(context, R.font.agencyfb);
+        val tf = ResourcesCompat.getFont(context, R.font.agencyfb)
         paint.setTypeface(tf)
 
-        val colorOrange = ContextCompat.getColor(context, R.color.orange)
+        colorOrange = ContextCompat.getColor(context, R.color.orange)
         paint.color = colorOrange
     }
 
@@ -90,10 +93,19 @@ class GameView2 : SurfaceView, Runnable {
 
         for (e in enemies) {
             e.update()
+
             for (b in playerBulletsSpace){
                 if (e.collissionDetection.intersect(b.collissionDetection)) {
-                    e.y = viewHeight + 100
-                    score += 100
+                    b.y = 0 - 100
+                    if(e.color == Color.RED){
+                        score += 100
+                        e.y = viewHeight + 100
+                    }
+                    if(e.color == Color.GREEN){
+                        score += 25
+                        e.y = viewHeight + 100
+                    }
+                    e.color = b.color
                 }
             }
 
@@ -102,6 +114,7 @@ class GameView2 : SurfaceView, Runnable {
                 spacePlayer.x = 1000
                 dead = true
             }
+
         }
 
         for (b in playerBulletsSpace) {
@@ -116,10 +129,12 @@ class GameView2 : SurfaceView, Runnable {
         }
 
         for (eb in enemyBullets) {
-            eb.update()
-            if (eb.collissionDetection.intersect(spacePlayer.collissionDetection)) {
-                spacePlayer.x = 1000
-                dead = true
+            for (e in enemies) {
+                eb.update(e)
+                if (eb.collissionDetection.intersect(spacePlayer.collissionDetection)) {
+                    spacePlayer.x = 1000
+                    dead = true
+                }
             }
         }
 
@@ -132,7 +147,7 @@ class GameView2 : SurfaceView, Runnable {
             (context as Activity).startActivity(intent)
         }
 
-        if(score >= 200 && !bossTime){
+        if(score >= bossScore && !bossTime){
             bossTime = true
             if (bossTime){
                 boss1 = Boss1(context!!, viewWidth, viewHeight)
@@ -143,16 +158,13 @@ class GameView2 : SurfaceView, Runnable {
 
         if(bossTime){
             boss1.update()
-
             for (b1 in boss1bullets_1) {
                 b1.update()
+                if (b1.collissionDetection.intersect(spacePlayer.collissionDetection)) {
+                    spacePlayer.x = 1000
+                    dead = true
+                }
             }
-        }
-
-        if(score == 3000){
-            val intent = Intent().setClass(context, MainActivity::class.java)
-            intent.putExtra("SCORE", score)
-            (context as Activity).startActivity(intent)
         }
 
         if(bulletTime <= 0.0f){
@@ -173,11 +185,11 @@ class GameView2 : SurfaceView, Runnable {
         if (surfaceHolder.surface.isValid) {
             canvas = surfaceHolder.lockCanvas()
             canvas.drawColor(Color.BLACK)
+
             canvas.drawBitmap(spacePlayer.bitmap!!, spacePlayer.x.toFloat(), spacePlayer.y.toFloat(), Paint())
 
             if(bossTime) {
                 canvas.drawBitmap(boss1.bitmap!!, boss1.x.toFloat(), boss1.y.toFloat(), Paint())
-
                 for (b1 in boss1bullets_1) {
                     canvas.drawBitmap(b1.bitmap!!, b1.x.toFloat(), b1.y.toFloat(), Paint())
                 }
@@ -185,21 +197,26 @@ class GameView2 : SurfaceView, Runnable {
 
             for ( s in stars){
                 paint.strokeWidth = s.getStarWidth()
+                paint.color = Color.WHITE
                 canvas.drawPoint(s.x.toFloat(), s.y.toFloat(), paint)
             }
 
             for ( e in enemies){
-                canvas.drawBitmap(e.bitmap!!, e.x.toFloat(),e.y.toFloat(), Paint())
+                paint.colorFilter = PorterDuffColorFilter(e.color, PorterDuff.Mode.MULTIPLY)
+                canvas.drawBitmap(e.bitmap!!, e.x.toFloat(),e.y.toFloat(), paint)
             }
 
             for (b in playerBulletsSpace) {
-                canvas.drawBitmap(b.bitmap!!, b.x.toFloat(), b.y.toFloat(), Paint())
+                paint.colorFilter = PorterDuffColorFilter(b.color, PorterDuff.Mode.MULTIPLY)
+                canvas.drawBitmap(b.bitmap!!, b.x.toFloat(), b.y.toFloat(), paint)
             }
 
             for ( eb in enemyBullets){
                 canvas.drawBitmap(eb.bitmap!!,eb.x.toFloat(),eb.y.toFloat(), Paint())
             }
 
+            paint.colorFilter = null
+            paint.color = colorOrange
             canvas.drawText("Score: " + score, 50.0f, 100.0f, paint)
 
             surfaceHolder.unlockCanvasAndPost(canvas)

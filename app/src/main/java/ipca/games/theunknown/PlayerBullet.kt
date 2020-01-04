@@ -35,7 +35,7 @@ class PlayerBullet {
         minY = 100
         speed = 10
 
-        color = colorsArray()[(generator.nextInt(3))]
+        color = colorsArray()[(generator.nextInt(2))]
 
         bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.bullet)
 

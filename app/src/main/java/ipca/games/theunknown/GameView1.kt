@@ -3,10 +3,7 @@ package ipca.games.theunknown
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Typeface
+import android.graphics.*
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -21,6 +18,7 @@ class GameView1 : SurfaceView, Runnable {
     var score: Int = 0
     var viewWidth = 0
     var viewHeight = 0
+    var next : Int = 0
 
     var player : Player
     var playerBullets : MutableList<PlayerBullet> = ArrayList<PlayerBullet>()
@@ -45,6 +43,7 @@ class GameView1 : SurfaceView, Runnable {
         canvas = Canvas()
         surfaceHolder = holder
         bulletTime = 3.0f
+        next = 250
 
         this.viewWidth = viewWidth
         this.viewHeight = viewHeight
@@ -74,10 +73,19 @@ class GameView1 : SurfaceView, Runnable {
 
         for (e in enemies) {
             e.update()
+
             for (b in playerBullets){
                 if (e.collissionDetection.intersect(b.collissionDetection)) {
-                    e.y = viewHeight + 100
-                    score += 100
+                    b.y = 0 - 100
+                    if(e.color == Color.RED){
+                        score += 100
+                        e.y = viewHeight + 100
+                    }
+                    if(e.color == Color.GREEN){
+                        score += 25
+                        e.y = viewHeight + 100
+                    }
+                    e.color = b.color
                 }
             }
 
@@ -86,6 +94,7 @@ class GameView1 : SurfaceView, Runnable {
                 player.x = 1000
                 dead = true
             }
+
         }
 
         for (b in playerBullets) {
@@ -93,10 +102,12 @@ class GameView1 : SurfaceView, Runnable {
         }
 
         for (eb in enemyBullets) {
-            eb.update()
-            if (eb.collissionDetection.intersect(player.collissionDetection)) {
-                player.x = 1000
-                dead = true
+            for (e in enemies) {
+                eb.update(e)
+                if (eb.collissionDetection.intersect(player.collissionDetection)) {
+                    player.x = 1000
+                    dead = true
+                }
             }
         }
 
@@ -120,7 +131,7 @@ class GameView1 : SurfaceView, Runnable {
             (context as Activity).startActivity(intent)
         }
 
-        if(score >= 100){
+        if(score >= next){
             val intent = Intent().setClass(context, GameActivity2::class.java)
             intent.putExtra("SCORE", score)
             (context as Activity).startActivity(intent)
@@ -135,17 +146,20 @@ class GameView1 : SurfaceView, Runnable {
             canvas.drawBitmap(player.bitmap!!, player.x.toFloat(), player.y.toFloat(), Paint())
 
             for ( e in enemies){
-                canvas.drawBitmap(e.bitmap!!, e.x.toFloat(),e.y.toFloat(), Paint())
+                paint.colorFilter = PorterDuffColorFilter(e.color, PorterDuff.Mode.MULTIPLY)
+                canvas.drawBitmap(e.bitmap!!, e.x.toFloat(),e.y.toFloat(), paint)
             }
 
             for (b in playerBullets) {
-                canvas.drawBitmap(b.bitmap!!, b.x.toFloat(), b.y.toFloat(), Paint())
+                paint.colorFilter = PorterDuffColorFilter(b.color, PorterDuff.Mode.MULTIPLY)
+                canvas.drawBitmap(b.bitmap!!, b.x.toFloat(), b.y.toFloat(), paint)
             }
 
             for ( eb in enemyBullets){
                 canvas.drawBitmap(eb.bitmap!!,eb.x.toFloat(),eb.y.toFloat(), Paint())
             }
 
+            paint.colorFilter = null
             canvas.drawText("Score: " + score, 50.0f, 100.0f, paint)
 
             surfaceHolder.unlockCanvasAndPost(canvas)

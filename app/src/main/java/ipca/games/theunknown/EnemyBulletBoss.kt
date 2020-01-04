@@ -22,7 +22,6 @@ class EnemyBulletBoss {
 
     var generator = Random()
 
-    var color: Int
 
     constructor(context: Context,
                 borderWidth: Int,
@@ -35,7 +34,6 @@ class EnemyBulletBoss {
         minY = 100
         speed = enemyBoss.speed * 2
 
-        color = colorsArray()[(generator.nextInt(3))]
 
         bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.enemy_bullet)
 

@@ -7,7 +7,6 @@ import android.graphics.Color
 //
 fun colorsArray() : MutableList<Int>{
     val colors : MutableList<Int> = ArrayList<Int>()
-    colors.add(Color.BLUE)
     colors.add(Color.RED)
     colors.add(Color.GREEN)
 
