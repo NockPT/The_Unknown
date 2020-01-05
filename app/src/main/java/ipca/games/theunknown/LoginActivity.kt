@@ -10,7 +10,12 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -89,7 +94,6 @@ class LoginActivity : AppCompatActivity() {
                     val user = auth.currentUser
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
-
 
                 } else {
                     // If sign in fails, display a message to the user.

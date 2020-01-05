@@ -6,5 +6,8 @@
     <string name="sign_up">Sign Up</string>
     <string name="create_account">Create Account</string>
     <string name="remember_me">Remember me</string>
+    <string name="new_highscore">New High Score</string>
+    <string name="score">Score:</string>
+    <string name="highscore">High Score:</string>
     <string name="authentication_failed">Authentication failed.</string>
 </resources>

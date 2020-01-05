@@ -1,6 +1,7 @@
 package ipca.games.theunknown
 
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.graphics.drawable.AnimationDrawable
@@ -30,6 +31,33 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         requestedOrientation =  (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main)
+
+        textHighscore.text = getString(R.string.highscore) + "0"
+
+        var highscore: Int? = 0
+        val database = FirebaseDatabase.getInstance()
+        val myRef = database.getReference("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("highscore")
+
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                val value = dataSnapshot.getValue(Long::class.java)
+                highscore = value?.toInt()
+                if (highscore == null) {
+                    highscore = 0
+                    textHighscore.text = getString(R.string.highscore) + highscore.toString()
+                }else{
+                    textHighscore.text = getString(R.string.highscore) + highscore.toString()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                highscore = 0
+            }
+
+        })
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE

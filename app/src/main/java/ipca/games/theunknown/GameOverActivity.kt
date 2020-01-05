@@ -8,11 +8,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_game_over.*
+import kotlinx.android.synthetic.main.activity_game_over.textViewScore
 import kotlinx.android.synthetic.main.activity_main.imageExit
 import kotlinx.android.synthetic.main.activity_main.imageRestart
+import kotlinx.android.synthetic.main.activity_you_win.*
 import kotlin.system.exitProcess
 
 class GameOverActivity : AppCompatActivity() {
@@ -26,6 +29,8 @@ class GameOverActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         requestedOrientation =  (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_game_over)
+
+        textHighScoreOver.isVisible = false
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
@@ -70,15 +75,16 @@ class GameOverActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        textViewScore.text = intent.getIntExtra("SCORE",0).toString()
+        textViewScore.text = getString(R.string.score) + intent.getIntExtra("SCORE",0).toString()
         var finalscore = intent.getIntExtra("SCORE",0)
 
         val database = FirebaseDatabase.getInstance()
         val myRef = database.getReference("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("highscore")
 
-        if(finalscore > GameActivity1.highscore!!)
+        if(finalscore > GameActivity1.highscore!!) {
             myRef.setValue(finalscore)
-
+            textHighScoreOver.isVisible = true
+        }
     }
 
     override fun onStart() {
