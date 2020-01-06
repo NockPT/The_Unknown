@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -33,6 +34,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         textHighscore.text = getString(R.string.highscore) + "0"
+        textHighscore.isVisible = false
+
 
         var highscore: Int? = 0
         val database = FirebaseDatabase.getInstance()
@@ -47,8 +50,10 @@ class MainActivity : AppCompatActivity() {
                 if (highscore == null) {
                     highscore = 0
                     textHighscore.text = getString(R.string.highscore) + highscore.toString()
+                    textHighscore.isVisible = true
                 }else{
                     textHighscore.text = getString(R.string.highscore) + highscore.toString()
+                    textHighscore.isVisible = true
                 }
             }
             override fun onCancelled(error: DatabaseError) {
