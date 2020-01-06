@@ -33,7 +33,7 @@ class EnemyBullet {
         maxY = borderHeight
         minX = 0
         minY = 100
-        speed = 15
+        speed = 8
 
 
         bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.enemy_bullet)
