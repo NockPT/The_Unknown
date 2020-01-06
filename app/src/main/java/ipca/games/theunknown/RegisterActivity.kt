@@ -57,7 +57,7 @@ class RegisterActivity : AppCompatActivity() {
                 } else { // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(
-                        this@RegisterActivity, "Email already used.",
+                        this@RegisterActivity, "Email already used or password too short (must be >6 characters)",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
