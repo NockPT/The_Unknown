@@ -35,8 +35,8 @@ class LoginActivity : AppCompatActivity() {
         //password = 123123
 
         //for debugging purposes
-        username.setText("test@test.com")
-        password.setText("123123")
+        //username.setText("test@test.com")
+        //password.setText("123123")
 
         auth = FirebaseAuth.getInstance()
 
