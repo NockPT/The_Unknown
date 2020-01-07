@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_game_over.*
@@ -84,6 +85,19 @@ class YouWinActivity : AppCompatActivity() {
         if(finalscore > GameActivity1.highscore!!) {
             myRef.setValue(finalscore)
             textHighScoreWin.isVisible = true
+        }
+
+        lateinit var mShare : FloatingActionButton
+        mShare = findViewById(R.id.fabSave)
+        mShare.setOnClickListener {
+            val myintent = Intent(Intent.ACTION_SEND)
+            myintent.type = "type/palin"
+            val shareBody = "Score"
+            val shareSub = finalscore.toString()
+            myintent.putExtra(Intent.EXTRA_SUBJECT, shareBody)
+            myintent.putExtra(Intent.EXTRA_TEXT, shareSub)
+            startActivity(Intent.createChooser(myintent, "Share your App"))
+
         }
 
 
