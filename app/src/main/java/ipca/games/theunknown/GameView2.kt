@@ -21,6 +21,8 @@ class GameView2 : SurfaceView, Runnable {
     var bossScore : Int
 
     var spacePlayer : SpacePlayer
+    var boom : Boom
+
     lateinit var boss1 : Boss1
     var playerBulletsSpace : MutableList<PlayerBulletSpace> = ArrayList<PlayerBulletSpace>()
 
@@ -46,6 +48,7 @@ class GameView2 : SurfaceView, Runnable {
 
     constructor(context: Context? , viewWidth : Int, viewHeight : Int) : super(context){
         spacePlayer = SpacePlayer(context!!, viewWidth, viewHeight)
+        boom = Boom(context!!, viewWidth, viewHeight)
 
         paint = Paint()
         paint.textSize = 50.0f
@@ -91,6 +94,9 @@ class GameView2 : SurfaceView, Runnable {
 
         spacePlayer.update()
 
+        boom.x = -300
+        boom.y = -300
+
         for (e in enemies) {
             e.update()
 
@@ -99,10 +105,14 @@ class GameView2 : SurfaceView, Runnable {
                     b.y = 0 - 100
                     if(e.color == Color.RED){
                         score += 100
+                        boom.x = e.x
+                        boom.y = e.y
                         e.y = viewHeight + 100
                     }
                     if(e.color == Color.GREEN){
                         score += 25
+                        boom.x = e.x
+                        boom.y = e.y
                         e.y = viewHeight + 100
                     }
                     e.color = b.color
@@ -111,6 +121,8 @@ class GameView2 : SurfaceView, Runnable {
 
             if (e.collissionDetection.intersect(spacePlayer.collissionDetection)) {
                 e.y = viewHeight + 100
+                boom.x = spacePlayer.x
+                boom.y = spacePlayer.y
                 spacePlayer.x = 1000
                 dead = true
             }
@@ -132,6 +144,8 @@ class GameView2 : SurfaceView, Runnable {
             for (e in enemies) {
                 eb.update(e)
                 if (eb.collissionDetection.intersect(spacePlayer.collissionDetection)) {
+                    boom.x = spacePlayer.x
+                    boom.y = spacePlayer.y
                     spacePlayer.x = 1000
                     dead = true
                 }
@@ -161,6 +175,8 @@ class GameView2 : SurfaceView, Runnable {
             for (b1 in boss1bullets_1) {
                 b1.update()
                 if (b1.collissionDetection.intersect(spacePlayer.collissionDetection)) {
+                    boom.x = spacePlayer.x
+                    boom.y = spacePlayer.y
                     spacePlayer.x = 1000
                     dead = true
                 }
@@ -187,6 +203,7 @@ class GameView2 : SurfaceView, Runnable {
             canvas.drawColor(Color.BLACK)
 
             canvas.drawBitmap(spacePlayer.bitmap!!, spacePlayer.x.toFloat(), spacePlayer.y.toFloat(), Paint())
+            canvas.drawBitmap(boom.resized!!,boom.x.toFloat(),boom.y.toFloat(), Paint())
 
             if(bossTime) {
                 canvas.drawBitmap(boss1.bitmap!!, boss1.x.toFloat(), boss1.y.toFloat(), Paint())

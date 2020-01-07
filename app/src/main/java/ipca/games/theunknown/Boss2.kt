@@ -27,7 +27,7 @@ class Boss2 {
 
         bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.boss_2_0)
 
-        resized = Bitmap.createScaledBitmap(bitmap,(bitmap.getWidth() * 10.0f).toInt(), (bitmap.getHeight() * 10.0f).toInt(), true);
+        resized = Bitmap.createScaledBitmap(bitmap,(bitmap.getWidth() * 10.0f).toInt(), (bitmap.getHeight() * 10.0f).toInt(), true)
 
 
         y = 0

@@ -21,6 +21,7 @@ class GameView1 : SurfaceView, Runnable {
     var next : Int = 0
 
     var player : Player
+    var boom : Boom
     var playerBullets : MutableList<PlayerBullet> = ArrayList<PlayerBullet>()
 
 
@@ -37,6 +38,7 @@ class GameView1 : SurfaceView, Runnable {
 
     constructor(context: Context? , viewWidth : Int, viewHeight : Int) : super(context){
         player = Player(context!!, viewWidth, viewHeight)
+        boom = Boom(context!!, viewWidth, viewHeight)
 
         paint = Paint()
         paint.textSize = 50.0f
@@ -71,18 +73,24 @@ class GameView1 : SurfaceView, Runnable {
         bulletTime -= 0.2f
         player.update()
 
+        boom.x = -300
+        boom.y = -300
+
         for (e in enemies) {
             e.update()
-
             for (b in playerBullets){
                 if (e.collissionDetection.intersect(b.collissionDetection)) {
                     b.y = 0 - 100
                     if(e.color == Color.RED){
                         score += 100
+                        boom.x = e.x
+                        boom.y = e.y
                         e.y = viewHeight + 100
                     }
                     if(e.color == Color.GREEN){
                         score += 25
+                        boom.x = e.x
+                        boom.y = e.y
                         e.y = viewHeight + 100
                     }
                     e.color = b.color
@@ -91,6 +99,8 @@ class GameView1 : SurfaceView, Runnable {
 
             if (e.collissionDetection.intersect(player.collissionDetection)) {
                 e.y = viewHeight + 100
+                boom.x = player.x
+                boom.y = player.y
                 player.x = 1000
                 dead = true
             }
@@ -105,6 +115,8 @@ class GameView1 : SurfaceView, Runnable {
             for (e in enemies) {
                 eb.update(e)
                 if (eb.collissionDetection.intersect(player.collissionDetection)) {
+                    boom.x = player.x
+                    boom.y = player.y
                     player.x = 1000
                     dead = true
                 }
@@ -144,6 +156,7 @@ class GameView1 : SurfaceView, Runnable {
             canvas.drawColor(getResources().getColor(R.color.water))
 
             canvas.drawBitmap(player.bitmap!!, player.x.toFloat(), player.y.toFloat(), Paint())
+            canvas.drawBitmap(boom.resized!!,boom.x.toFloat(),boom.y.toFloat(), Paint())
 
             for ( e in enemies){
                 paint.colorFilter = PorterDuffColorFilter(e.color, PorterDuff.Mode.MULTIPLY)
